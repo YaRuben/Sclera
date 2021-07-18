@@ -1,0 +1,17 @@
+{
+  "name": "sclera",
+  "version": "0.0.1",
+  "description": "Scleral lense design and manufacturing support.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "R.M.",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^20.1.5",
+    "@hapi/inert": "^6.0.3",
+    "async-mutex": "^0.3.1",
+    "sqlite3": "^5.0.2"
+  }
+}

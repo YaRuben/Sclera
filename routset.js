@@ -1,7 +1,8 @@
 'use strict';
 const Path = require('path');
 const fs = require('fs');
-const sqlite3 = require('sqlite3').verbose();
+const cfg = require('./config').dblite;
+const litedb = require('./db/sqlite');
 const Mutex = require('async-mutex').Mutex;
 const Semaphore = require('async-mutex').Semaphore;
 const withTimeout = require('async-mutex').withTimeout;
@@ -26,32 +27,21 @@ module.exports = [
         }
     },
     {
-        method: 'GET',
-        path: '/sqlite',
+        method: 'POST',
+        path: '/signin',
         handler: async (request, h) => {
-            let rt;
-            let rs;
-            let lock = new Mutex();
-            let release = await lock.acquire();
-            var db = new sqlite3.Database(':memory:');
-           db.serialize(function () {
-                db.run("CREATE TABLE lorem (info TEXT)");
-                var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
-                for (var i = 0; i < 10; i++) {
-                    stmt.run("Ipsum " + i);
-                }
-            stmt.finalize();
-            db.all("SELECT rowid AS id, info FROM lorem", 
-            //async (err, rows) => { rt = JSON.stringify(rows);release();});
-            async (err, rows) => { rt = rows;release();});                
-            });
-            db.close();
-            await lock.runExclusive(async () => {
-               rs =  h.response(rt).state(200);
-            });
-            return rs.type('application/json');
-        }
-        
+            const ts = Date.now();
+            const pl = request.payload;
+            let res = litedb.run(cfg.usrinsert,[pl.email,null,ts,ts]);
+            let uid = res.lastInsertRowid;
+            //(user_id, profile_status, userFirst, userLast, userSuffix, company, position, companyWeb, contactPhone, country, city, state, mailingAddr)
+            // let prs = Object.values(pl).splice(0,0,uid);
+            //let prs =`'`+ [uid,0,pl.fname,pl.lname, pl.suff, pl.company, pl.position,  pl.companyWeb, pl.contactPhone, pl.country, pl.city, pl.state, pl.addr].join(`','`)+`'`;
+            //res = litedb.run(cfg.profileinsert,prs); 
+            let sql = `INSERT INTO profiles values (${uid},0,'${pl.fname}','${pl.lname}', '${pl.suff}', '${pl.company}', '${pl.position}',  '${pl.companyWeb}', '${pl.contactPhone}', '${pl.country}', '${pl.city}', '${pl.state}', '${pl.addr}')`;
+            res = litedb.run(sql,[]); 
+            return h.response(JSON.stringify(res));
+        }  
     }
 ];
 exports.routeset;

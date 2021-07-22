@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sign In</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    <div>
+        <form id="enroll" method="post" action="/signin">
+            <fieldset>
+                <legend>Enrollment information</legend>
+                <input type="text" name="fname" placeholder="First Name" required><br>
+                <input type="text" name="lname" placeholder="Last Name" required><br>
+                <input type="text" name="suff" placeholder="Suffix"><br>
+                <input type="text" name="company" placeholder="Company" required><br>
+                <input type="text" name="position" placeholder="Position"><br>
+                <input type="tel" name="contactPhone" placeholder="Contact phone" required><br>
+                <input type="url" name="companyWeb" placeholder="Company website"><br>
+                <input type="text" name="country" placeholder="Country" value="USA" required><br>
+                <input type="text" name="city" placeholder="City" required><br>
+                <input type="text" name="state" placeholder="State"><br>
+                <hr>
+                <label for="email">Will be used as the login</label><br>
+                <input type="email" name="email" placeholder="E-mail (will be used as your login id)" required><br>
+                <label for="addr">Mailing address</label><br>
+                <textarea name="addr" placeholder="Mailing address" rows="6" cols="37"></textarea><br><br>
+                <input type="submit" value="Submit">
+            </fieldset>
+        </form>
+    </div>
+    <script src="" async defer></script>
+</body>
+
+</html>

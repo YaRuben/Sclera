@@ -31,20 +31,22 @@ module.exports = [
         method: 'POST',
         path: '/signin',
         handler: async (request, h) => {
+            let res;
             const ts = Date.now();
             const pl = request.payload;
-            
-            // console.log(util.inspectObject(pl));
-            // console.log(util.properyValues(pl));
-            litedb.
-            let res = litedb.run(cfg.usrinsert,[pl.email,null,ts,ts]);
+            litedb.begin();
+            try{
+            res = litedb.run(cfg.usrinsert,[pl.email,null,ts,ts]);
             let uid = res.lastInsertRowid;
-            //(user_id, profile_status, userFirst, userLast, userSuffix, company, position, companyWeb, contactPhone, country, city, state, mailingAddr)
-            // let prs = Object.values(pl).splice(0,0,uid);
-            //let prs =`'`+ [uid,0,pl.fname,pl.lname, pl.suff, pl.company, pl.position,  pl.companyWeb, pl.contactPhone, pl.country, pl.city, pl.state, pl.addr].join(`','`)+`'`;
-            //res = litedb.run(cfg.profileinsert,prs); 
+            if (res.changes !== 1) {throw new Error('User insert failed. Rolling back.');}
             let sql = `INSERT INTO profiles values (${uid},0,'${pl.fname}','${pl.lname}', '${pl.suff}', '${pl.company}', '${pl.position}',  '${pl.companyWeb}', '${pl.contactPhone}', '${pl.country}', '${pl.city}', '${pl.state}', '${pl.addr}')`;
-            res = litedb.run(sql,[]); 
+            res = litedb.run(sql,[]);
+            litedb.commit(); 
+            }
+            catch(err){
+                return h.response(JSON.stringify(err));
+                litedb.rollback();
+            }
             return h.response(JSON.stringify(res));
         }  
     }

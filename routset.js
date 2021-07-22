@@ -1,6 +1,7 @@
 'use strict';
 const Path = require('path');
 const fs = require('fs');
+const util = require('./public/js/utils');
 const cfg = require('./config').dblite;
 const litedb = require('./db/sqlite');
 const Mutex = require('async-mutex').Mutex;
@@ -32,6 +33,10 @@ module.exports = [
         handler: async (request, h) => {
             const ts = Date.now();
             const pl = request.payload;
+            
+            // console.log(util.inspectObject(pl));
+            // console.log(util.properyValues(pl));
+            litedb.
             let res = litedb.run(cfg.usrinsert,[pl.email,null,ts,ts]);
             let uid = res.lastInsertRowid;
             //(user_id, profile_status, userFirst, userLast, userSuffix, company, position, companyWeb, contactPhone, country, city, state, mailingAddr)

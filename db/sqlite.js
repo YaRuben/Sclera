@@ -28,6 +28,9 @@ module.exports = {
     all: (sql, params) => { //only on statements that return data
         return process.litedb.prepare(sql).all(params);
     },
+    begin: () => {return process.litedb.prepare('BEGIN').run();},
+    commit: () => {return process.litedb.prepare('COMMIT').run();},
+    rollback: () => {return process.litedb.prepare('ROLLBACK').run();},
     close: () => {process.litedb.close();}
 
 }

@@ -13,7 +13,7 @@ module.exports = {
         const name = (cfg.dblite.name) ? Path.join(__dirname, cfg.dblite.location, cfg.dblite.name) : ':memory:';
         process.litedb = new sqlite3(name, { verbose: console.log });
     },
-    version: () => { this.get('SELECT sqlite_version()',[]);},
+    version: () => { return JSON.stringify(process.litedb.prepare('SELECT sqlite_version()').get([]));},
     exec: (sqlstr) => { // execute sqlstr that contain multiple SQL statements
         return process.litedb.exec(sqlstr);
     },

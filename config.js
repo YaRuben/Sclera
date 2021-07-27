@@ -12,6 +12,8 @@ module.exports= {
         location: '../data',
         usrinsert: `INSERT INTO users (user_status, user_role, user_login, user_pwd, user_time, user_created)
                     VALUES (0,?,?,?,?,?);`,
-        userlogin: `select * from users where user_status = 0 and user_login = ? and user_pwd = ?`
+        userlogin: `select * from users where user_status = 0 and user_login = ? and user_pwd = ?`,
+        userByToken: `select * from users where user_status = 0 and user_token = ?`
    }
+   
 }

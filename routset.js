@@ -43,7 +43,31 @@ module.exports = [
            let vR = await utils.validateToken(decoded,request,h);
           return h.response(vR);
         }
-        
+    },
+    {
+        method: 'GET',
+        path: '/refresh',
+        options: { auth: false },
+        handler: async (request, h) => {
+            let res;
+            let rsp;
+            let hdrs = request.raw.req.headers;
+            let tkn = hdrs.authorization.replace('Bearer ', '');;
+            res = litedb.get(cfg.dblite.userByToken, [`${tkn}`]);
+            if(res){
+                let extm = Date.parse(Date())/1000;
+                let init = utils.randomStrHex(32);
+                const payload = {iss: 'HFR', iat: extm, aud: 'HFR', iss: 'HFRAS',  user: `${res.user_login}`, role: `${res.user_role}`, nonce: `${res.user_init }`};
+                tkn = Jwt.token.generate(payload, cfg.jwt.secret);
+                rsp = h.response(res);
+                let sql = `update users set user_time=${extm}, user_token='${tkn}', user_init='${init}'`;
+            litedb.run(sql,[]);
+            } else 
+            {
+                rsp = h.redirect('error.html');
+            };   
+          return h.response(rsp);
+        }
     },
     {
         method: 'POST',

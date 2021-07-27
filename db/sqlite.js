@@ -23,10 +23,13 @@ module.exports = {
         return info;
     },
     get: (sql, params) => { //only on statements that return data
-        return process.litedb.prepare(sql).get(params);
+        let stmt = process.litedb.prepare(sql);
+        let info = stmt.get(params);
+        return info;
     },
     all: (sql, params) => { //only on statements that return data
-        return process.litedb.prepare(sql).all(params);
+        let stmt = process.litedb.prepare(sql);
+        return stmt.all(params);
     },
     begin: () => {return process.litedb.prepare('BEGIN').run();},
     commit: () => {return process.litedb.prepare('COMMIT').run();},

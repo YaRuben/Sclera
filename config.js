@@ -4,15 +4,14 @@ module.exports= {
         host: '0.0.0.0',
         fileRoot: 'public'
     },
+    jwt: {
+        secret:'3c255ba79194a85af4556360e664c6e0'
+    },
     dblite: {
         name: 'users.db3',
         location: '../data',
-        usrinsert: `INSERT INTO users (user_status, user_login, user_pwd, user_time, user_created)
-                    VALUES (0,?,?,?,?);`,
-        // profileinsert: `INSERT INTO profiles (user_id, profile_status, userFirst, userLast, userSuffix, company, position, companyWeb, contactPhone, country, city, state, mailingAddr) VALUES (?,0,?,?,?,?,?,?,?,?,?,?,?);`  
-        // profileinsert: `INSERT INTO profiles (user_id, userFirst, userLast, userSuffix, company, position, companyWeb, contactPhone, country, city, state)
-        // VALUES (:user_id, :userFirst, :userLast, :userSuffix, :company, :position, :companyWeb, :contactPhone, :country, :city, :state);` 
-        // profileinsert: `INSERT INTO profiles (user_id, profile_status, userFirst, userLast, userSuffix, company, position, companyWeb, contactPhone, country, city, state, mailingAddr)
-        // VALUES (:user_id, :profile_status, :userFirst, :userLast, :userSuffix, :company, :position, :companyWeb, :contactPhone, :country, :city, :state, :mailingAddr);`            
+        usrinsert: `INSERT INTO users (user_status, user_role, user_login, user_pwd, user_time, user_created)
+                    VALUES (0,?,?,?,?,?);`,
+        userlogin: `select * from users where user_status = 0 and user_login = ? and user_pwd = ?`
    }
 }

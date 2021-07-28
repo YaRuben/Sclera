@@ -10,6 +10,7 @@ const Mutex = require('async-mutex').Mutex;
 const Semaphore = require('async-mutex').Semaphore;
 const withTimeout = require('async-mutex').withTimeout;
 const utils = require('./public/js/utils');
+const Boom = require('@hapi/boom'); 
 
 
 module.exports = [
@@ -33,15 +34,25 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/token',
+        path: '/token/{usr}/{pwd}',
         options: { auth: false },
         handler: async (request, h) => {
-            let hdrs = request.raw.req.headers;
-            let tkn = hdrs.authorization;
-            tkn = tkn.replace('Bearer ', '');
-            let decoded = Jwt.token.decode(tkn);
-           let vR = await utils.validateToken(decoded,request,h);
-          return h.response(vR);
+            try{                
+                let usr = request.params.usr;
+                let pwd = request.params.pwd;
+                let res = litedb.get(cfg.dblite.userlogin,[usr,pwd]);
+                let init = utils.randomStrHex(32);
+                if(res){
+                    const payload = {iss: 'HFR', iat: Date.parse(Date())/1000, aud: 'HFR', iss: 'HFRAS',  user: `${res.user_login}`, role: `${res.user_role}`, nonce: `${res.user_init }`};
+                    let tkn = Jwt.token.generate(payload, cfg.jwt.secret);
+                    let sql = `update users set user_time=${Date.parse(Date())/1000}, user_token='${tkn}', user_init='${init}'`;
+                    litedb.run(sql,[]);
+                    return h.response(tkn);
+                }else{throw 'No such user.';}                
+            }catch(err){
+               console.log(err); 
+               return h.response(err)
+            }
         }
     },
     {
@@ -49,24 +60,24 @@ module.exports = [
         path: '/refresh',
         options: { auth: false },
         handler: async (request, h) => {
-            let res;
-            let rsp;
+            try{
             let hdrs = request.raw.req.headers;
             let tkn = hdrs.authorization.replace('Bearer ', '');;
-            res = litedb.get(cfg.dblite.userByToken, [`${tkn}`]);
+            let res = litedb.get(cfg.dblite.userByToken, [`${tkn}`]);
+            let init = utils.randomStrHex(32);
             if(res){
-                let extm = Date.parse(Date())/1000;
-                let init = utils.randomStrHex(32);
-                const payload = {iss: 'HFR', iat: extm, aud: 'HFR', iss: 'HFRAS',  user: `${res.user_login}`, role: `${res.user_role}`, nonce: `${res.user_init }`};
+                const payload = {iss: 'HFR', iat: Date.parse(Date())/1000, aud: 'HFR', iss: 'HFRAS',  user: `${res.user_login}`, role: `${res.user_role}`, nonce: `${init}`};
                 tkn = Jwt.token.generate(payload, cfg.jwt.secret);
-                rsp = h.response(res);
-                let sql = `update users set user_time=${extm}, user_token='${tkn}', user_init='${init}'`;
-            litedb.run(sql,[]);
-            } else 
+                let sql = `update users set user_time=${Date.parse(Date())/1000}, user_token='${tkn}', user_init='${init}'`;
+                litedb.run(sql,[]);
+                return h.response(tkn);
+            } else{throw 'No such session.';} 
+        }catch(err)
             {
-                rsp = h.redirect('error.html');
+                console.log(err); 
+                // return h.response(err).status(400);
+                throw Boom.notFound(err);
             };   
-          return h.response(rsp);
         }
     },
     {
@@ -85,7 +96,7 @@ module.exports = [
             if(res){
                 const payload = {iss: 'HFR', iat: extm, aud: 'HFR', iss: 'HFRAS',  user: `${res.user_login}`, role: `${res.user_role}`, nonce: `${res.user_init }`};
                 tkn = Jwt.token.generate(payload, cfg.jwt.secret);
-                rsp = h.response(res);
+                rsp = h.response(tkn);
             } else 
             {
                 rsp = h.redirect('error.html');

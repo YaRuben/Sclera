@@ -6,4 +6,6 @@ run: http-echo-server <port>
 2. Postman Echo
 https://www.postman.com/postman/workspace/published-postman-templates/documentation/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65?ctx=documentation
 
-curl -X GET -v -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIRlJBUyIsImlhdCI6MTYyNzI4MDY0OSwiYXVkIjoiSEZSIiwidXNlciI6Imxvc2hrYUBnbWFpbC5jb20iLCJyb2xlIjoiZGVzaWduZXIifQ.MkyzHKOSUBIJlnrgTe24kScgpHzNotW4FVXiaG7p6hw" http://localhost:3005/token 
+curl -X GET -v   http://localhost:3005/token/loshka@gmail.com/kuku 
+
+curl -X GET -v -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIRlJBUyIsImlhdCI6MTYyNzUxMTMzNywiYXVkIjoiSEZSIiwidXNlciI6Imxvc2hrYUBnbWFpbC5jb20iLCJyb2xlIjoiZGVzaWduZXIiLCJub25jZSI6IjJkMThiZGFhNmJkNzQwOTI3ODdjNjFkOTNlODdlNjE0OWI4MmY0OTBhZjYyMjZmNjZkOWI0ZGM1ZjVhYjkyMjIifQ.wSuAXuYpwn3rdaAtU9327hGKqulM9D8vN_7ZjIpuuWw" http://localhost:3005/refresh

@@ -25,21 +25,4 @@ module.exports = {
         
     }
 
-    // validateToken: async (artifacts, request, h) => {
-    //     let raw = artifacts.raw;
-    //     let decoded = artifacts.decoded;
-    //     let valid;
-    //     try{
-    //     await Jwt.token.verifySignature(artifacts, cfg.jwt.secret);
-    //     await Jwt.token.verifyTime(artifacts);
-    //     valid = true;    
-    // }
-    // catch(err){valid =false;} 
-    //     return {
-    //         isValid: valid,
-    //         credentials: { user: decoded.payload.user, role: decoded.payload.role }
-    //     };
-    // }
-
-
 }

@@ -1,14 +1,10 @@
 'use strict';
 const Path = require('path');
 const fs = require('fs');
-//const cript = require('@hapi/cryptiles');
 const utils = require('./public/js/utils');
 const Jwt = require('@hapi/jwt');
 const cfg = require('./config');
 const litedb = require('./db/sqlite');
-const Mutex = require('async-mutex').Mutex;
-const Semaphore = require('async-mutex').Semaphore;
-const withTimeout = require('async-mutex').withTimeout;
 const Boom = require('@hapi/boom');
 
 
@@ -45,19 +41,6 @@ module.exports = [
             } catch (err) {
                 throw Boom.unauthorized(`invalid credentials`);
             }
-
-            //     if(res){
-            //         let init = utils.randomStrHex(32);
-            //         const payload = {iss: 'HFR', iat: Date.parse(Date())/1000, aud: 'HFR', iss: 'HFRAS',  user: `${res.user_login}`, role: `${res.user_role}`, nonce: `${res.user_init }`};
-            //         let tkn = Jwt.token.generate(payload, cfg.jwt.secret);
-            //         let sql = `update users set user_time=${Date.parse(Date())/1000}, user_token='${tkn}', user_init='${init}'  where user_id = ${res.user_id}`;
-            //         litedb.run(sql,[]);
-            //         return h.response(tkn);
-            //     }else{throw 'No such user.';}                
-            // }catch(err){
-            //    console.log(err); 
-            //    return h.response(err)
-            // }
         }
     },
     {
@@ -73,20 +56,6 @@ module.exports = [
             } catch (err) {
                 throw Boom.notFound(err);
             }
-            // let init = utils.randomStrHex(32);
-            // if(res){
-            //     const payload = {iss: 'HFR', iat: Date.parse(Date())/1000, aud: 'HFR', iss: 'HFRAS',  user: `${res.user_login}`, role: `${res.user_role}`, nonce: `${init}`};
-            //     tkn = Jwt.token.generate(payload, cfg.jwt.secret);
-            //     let sql = `update users set user_time=${Date.parse(Date())/1000}, user_token='${tkn}', user_init='${init}'  where user_id = ${res.user_id}`;
-            //     litedb.run(sql,[]);
-            //     return h.response(tkn);
-            // } else{throw 'No such session.';} 
-            // }catch(err)
-            //     {
-            //         console.log(err); 
-            //         // return h.response(err).status(400);
-            //         throw Boom.notFound(err);
-            //     };   
         }
     },
     {
@@ -101,29 +70,8 @@ module.exports = [
                 return h.response(utils.newToken(res));
             }catch(err){
                 throw Boom.unauthorized(`invalid credentials`);
-               // res = litedb.get(cfg.dblite.userlogin, [pl.email, pl.pwd]);  
             }
-            //let extm = Date.parse(Date()) / 1000;
-            //let init = utils.randomStrHex(32);
-            // try {
-            //     const pl = request.payload;
-            //     res = litedb.get(cfg.dblite.userlogin, [pl.email, pl.pwd]);
-            //     if (res) {
-            //         const payload = { iss: 'HFR', iat: extm, aud: 'HFR', iss: 'HFRAS', user: `${res.user_login}`, role: `${res.user_role}`, nonce: `${res.user_init}` };
-            //         tkn = Jwt.token.generate(payload, cfg.jwt.secret);
-            //         rsp = h.response(tkn);
-            //     } else {
-            //         rsp = h.redirect('error.html');
-            //     };
-            //     console.log(`${tkn}\n ${JSON.stringify(Jwt.token.decode(tkn))}`);
-            //     let sql = `update users set user_time=${extm}, user_token='${tkn}', user_init='${init}'  where user_id = ${res.user_id}`;
-            //     litedb.run(sql, []);
-            // }
-            // catch (err) { console.log(err); rsp = h.response(err); }
-            // return rsp.header('Authorization', `Bearer ${tkn}`);
-
         }
-
     },
     {
         method: 'POST',

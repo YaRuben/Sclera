@@ -8,4 +8,4 @@ https://www.postman.com/postman/workspace/published-postman-templates/documentat
 
 curl -X GET -v   http://localhost:3005/token/loshka@gmail.com/kuku 
 
-curl -X GET -v -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIRlJBUyIsImlhdCI6MTYyNzUxMTMzNywiYXVkIjoiSEZSIiwidXNlciI6Imxvc2hrYUBnbWFpbC5jb20iLCJyb2xlIjoiZGVzaWduZXIiLCJub25jZSI6IjJkMThiZGFhNmJkNzQwOTI3ODdjNjFkOTNlODdlNjE0OWI4MmY0OTBhZjYyMjZmNjZkOWI0ZGM1ZjVhYjkyMjIifQ.wSuAXuYpwn3rdaAtU9327hGKqulM9D8vN_7ZjIpuuWw" http://localhost:3005/refresh
+curl -X GET -v -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIRlJBUyIsImlhdCI6MTYyNzU4NTYzMSwiYXVkIjoiSEZSIiwidXNlciI6ImRvY0B0b3IuY29tIiwicm9sZSI6ImRvY3RvciIsIm5vbmNlIjoiZGMzMjgzZDk5ZjUxZWJlYzI0MDVjMTA3MzhlNTJmNjhhNzdlMWFjMWYxNzQ2ODEzZTIxMTlmY2U2N2NmYjgxZCJ9.9d_vvYDHDR_ydeAADxCMe0unIWztqPXcYjtpBwiO8co" http://localhost:3005/refresh

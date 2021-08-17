@@ -6,6 +6,10 @@ run: http-echo-server <port>
 2. Postman Echo
 https://www.postman.com/postman/workspace/published-postman-templates/documentation/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65?ctx=documentation
 
+3. NGINX CERTBOT (https://www.nginx.com/blog/using-free-ssltls-certificates-from-lets-encrypt-with-nginx/)
+nginx -t && nginx -s reload
+sudo certbot --nginx -d <example.com> -d <www.example.com.
+
 curl -X GET -v   http://localhost:3005/token/loshka@gmail.com/kuku 
 
 curl -X GET -v -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIRlJBUyIsImlhdCI6MTYyNzU4NTYzMSwiYXVkIjoiSEZSIiwidXNlciI6ImRvY0B0b3IuY29tIiwicm9sZSI6ImRvY3RvciIsIm5vbmNlIjoiZGMzMjgzZDk5ZjUxZWJlYzI0MDVjMTA3MzhlNTJmNjhhNzdlMWFjMWYxNzQ2ODEzZTIxMTlmY2U2N2NmYjgxZCJ9.9d_vvYDHDR_ydeAADxCMe0unIWztqPXcYjtpBwiO8co" http://localhost:3005/refresh

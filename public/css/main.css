@@ -1,0 +1,31 @@
+ul {
+    float:left;
+    clear:right;
+    padding:5px;
+    margin:5px;
+}
+li {
+    float:left;
+    clear:left;
+}
+
+.row {
+    display: flex;
+  }
+
+.column {
+    flex: 50%;
+    padding: 30px;
+    
+  }
+
+.titlbl {
+    float:left;
+    clear:right;
+ display:block;
+ text-align: center;
+ font-size: 22px;
+ width: 70%;
+ height: 30px;
+ 
+}

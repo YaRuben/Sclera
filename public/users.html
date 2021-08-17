@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Document</title>
+    <script src="./js/sclera.js"></script>
+    <script src="./js/sudox.js"></script>
+    <script>
+        var vo = (n, j) => { return `<span class="vo">${n.dataset.match}:</span> <span class="val">${j[n.dataset.match]}</span>` };
+        // var volnk = (n, j) => {let key = n.dataset.match; return `<span class="vo">${key}:</span> <span class="val">${j[key]}</span><a href="/uflip/${j[key]}">(Flip Status)</a>` };
+        // var statv = (n, j) => { let key = n.dataset.match; let res = (j[key] === 0) ? 'Active' : 'Inactive'; return `<span class="val">Id: ${j[key]}</span><a href="/uflip/${j[key]}"> ${res}(Flip Status)</a>`; };
+        var statv = (n, j) => { let res = (j['Status'] === 0) ? 'Active' : 'Inactive'; return `<span class="val">Id: ${j['Id']}</span><a href="/uflip/${j['Id']}"> ${res}(Flip Status)</a>`; };
+    </script>
+
+</head>
+
+<body onload="applyTemplate($('s1'),$('root1'));applyTemplate($('s2'),$('root2'));">
+    <!-- <section class="col-left"> -->
+        <div id="s1" class="slate" data-json="/users" hidden>
+            <div data-match="users">
+                <ul data-match="section">
+                    <li data-match="User" data-display="vo">User: </li>
+                    <li data-match="Status" data-display="statv"></li>
+                    <li data-match="Id" data-display="vo">Id: </li>
+                    <li data-match="Role" data-display="vo">Role: </li>
+                    <li data-match="Login" data-display="vo">LogIn: </li>
+                </ul>
+            </div>
+        </div>
+    <!-- </section> -->
+    <!-- <section class="col-right"> -->
+        <div id="s2" class="slate" data-json="/users/new" hidden>
+            <div data-match="users">
+                <ul data-match="section">
+                    <li data-match="User" data-display="vo">User: </li>
+                    <li data-match="Status" data-display="statv"></li>
+                    <li data-match="Id" data-display="vo">Id: </li>
+                    <li data-match="Role" data-display="vo">Role: </li>
+                    <li data-match="Login" data-display="vo">LogIn: </li>
+                </ul>
+            </div>
+        </div>
+    <!-- </section> -->
+    <div class="row">
+    <label for="root1" class="titlbl">Active users</label>     
+    <section id="root1" class="column">
+       
+    </section>
+    <label for="root2" class="titlbl">Inactive users</label> 
+    <section id="root2" class="column">
+       
+    </section>
+</div>
+    <!-- <div id="root">
+
+    </div> -->
+</body>
+
+</html>

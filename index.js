@@ -25,6 +25,14 @@ const init = async () => {
     litedb.connect();
     let version = litedb.version();
     console.log(`Database connected to ${cfg.dblite.name}. ${version}`);
+    server.state('fwt-token', {
+        ttl: null,
+        isSecure:  false,
+        isHttpOnly: true,
+        clearInvalid: false,
+        strictHeader: true
+  });
+
     await server.register(Inert);
     await server.register(Jwt);
 

@@ -6,6 +6,9 @@ const Jwt = require('@hapi/jwt');
 const cfg = require('./config');
 const litedb = require('./db/sqlite');
 const Boom = require('@hapi/boom');
+const { request } = require('http');
+
+
 
 
 
@@ -50,25 +53,72 @@ module.exports = [
         handler: async (request, h) => {
             try {
                 let hdrs = request.raw.req.headers;
-                let tkn = hdrs.authorization.replace('Bearer ', '');;
-                let res = litedb.get(cfg.dblite.userByToken, [`${tkn}`]);
-                return h.response(utils.newToken(res));
+                let tkn = hdrs.authorization ? hdrs.authorization.replace('Bearer ', '') : request.state.jwt - token;
+                if (tkn) {
+                    let res = litedb.get(cfg.dblite.userByToken, [`${tkn}`]);
+                    return h.response(utils.newToken(res));
+                }
             } catch (err) {
-                throw Boom.notFound(err);
+                throw Boom.notFound('No Bearer token found');
             }
         }
     },
+
+    {
+        method: 'GET',
+        path: '/users/{status?}',
+        options: { auth: false },
+        handler: async (request, h) => {
+            try {
+                let stat = request.params.status;
+                let sp = (stat==='new')?1:0;
+                let res = litedb.all(cfg.dblite.userSelect, [sp]);
+                res = res.map((x,i) => {let R = {}; R[`section`]=x; return R;});
+                let Ro = {'users': res};
+                return h.response(Ro);
+            } catch (err) {
+                throw Boom.notFound('Failed to get users');
+            }
+        },
+
+    },
+    {
+        method: 'GET',
+        path: '/uflip/{id}',
+        options: {auth: false},
+        handler: async (request, h) =>{
+            try{
+            let id = request.params.id;
+            let res = litedb.run(cfg.dblite.userFlipStatus, [id]);
+            console.log(res);
+            if(res.changes == 1){
+            return h.redirect('/users.html');
+            }else{throw Boom.Boom.badrequest('The user status can not be changed',`User Id: ${id}`);}
+            }catch(err){
+                throw Boom.notFound('Failed to flip Status');
+            }
+
+
+        }
+    },
+
+    // POST requests [START]   
     {
         method: 'POST',
         path: '/login',
         options: { auth: false },
         handler: async (request, h) => {
             let res;
-            try{
+            try {
                 const pl = request.payload;
                 res = litedb.get(cfg.dblite.userlogin, [pl.email, pl.pwd]);
-                return h.response(utils.newToken(res));
-            }catch(err){
+                let tkn = utils.newToken(res);
+                let decoded = utils.DecodeJWT(tkn);
+                let rsp = h.response(decoded).state('jwt-token', tkn);
+                rsp.header('jwt-token', tkn);
+                return rsp;
+                //return h.response(decoded).state('jwt-token',tkn);
+            } catch (err) {
                 throw Boom.unauthorized(`invalid credentials`);
             }
         }

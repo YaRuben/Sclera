@@ -11,8 +11,7 @@
     <script src="./js/sudox.js"></script>
     <script>
         var vo = (n, j) => { return `<span class="vo">${n.dataset.match}:</span> <span class="val">${j[n.dataset.match]}</span>` };
-        // var volnk = (n, j) => {let key = n.dataset.match; return `<span class="vo">${key}:</span> <span class="val">${j[key]}</span><a href="/uflip/${j[key]}">(Flip Status)</a>` };
-        // var statv = (n, j) => { let key = n.dataset.match; let res = (j[key] === 0) ? 'Active' : 'Inactive'; return `<span class="val">Id: ${j[key]}</span><a href="/uflip/${j[key]}"> ${res}(Flip Status)</a>`; };
+        var vot = (n, j) => { return `<span class="valt">${j[n.dataset.match]}</span>` };        
         var statv = (n, j) => { let res = (j['Status'] === 0) ? 'Active' : 'Inactive'; return `<span class="val">Id: ${j['Id']}</span><a href="/uflip/${j['Id']}"> ${res}(Flip Status)</a>`; };
     </script>
 
@@ -21,43 +20,56 @@
 <body onload="applyTemplate($('s1'),$('root1'));applyTemplate($('s2'),$('root2'));">
     <!-- <section class="col-left"> -->
         <div id="s1" class="slate" data-json="/users" hidden>
+            <span data-match="clone">Active Users</span>
             <div data-match="users">
                 <ul data-match="section">
-                    <li data-match="User" data-display="vo">User: </li>
+                    <li data-match="User" data-display="vot"></li>
                     <li data-match="Status" data-display="statv"></li>
-                    <li data-match="Id" data-display="vo">Id: </li>
-                    <li data-match="Role" data-display="vo">Role: </li>
-                    <li data-match="Login" data-display="vo">LogIn: </li>
+                    <li data-match="Company" data-display="vo"></li>
+                    <li data-match="Position" data-display="vo"></li>
+                    <li data-match="Phone" data-display="vo"></li>
+                    <li data-match="Role" data-display="vo"></li>
+                    <li data-match="Login" data-display="vo"></li>
+                    <li data-match="Country" data-display="vo"></li>
                 </ul>
             </div>
         </div>
     <!-- </section> -->
     <!-- <section class="col-right"> -->
         <div id="s2" class="slate" data-json="/users/new" hidden>
+            <span data-match="clone">Inactive Users</span>
             <div data-match="users">
                 <ul data-match="section">
-                    <li data-match="User" data-display="vo">User: </li>
+                    <li data-match="User" data-display="vot"></li>
                     <li data-match="Status" data-display="statv"></li>
-                    <li data-match="Id" data-display="vo">Id: </li>
-                    <li data-match="Role" data-display="vo">Role: </li>
-                    <li data-match="Login" data-display="vo">LogIn: </li>
+                    <li data-match="Company" data-display="vo"></li>
+                    <li data-match="Position" data-display="vo"></li>
+                    <li data-match="Phone" data-display="vo"></li>
+                    <li data-match="Role" data-display="vo"></li>
+                    <li data-match="Login" data-display="vo"></li>
+                    <li data-match="Country" data-display="vo"></li>
                 </ul>
             </div>
         </div>
-    <!-- </section> -->
-    <div class="row">
-    <label for="root1" class="titlbl">Active users</label>     
-    <section id="root1" class="column">
-       
-    </section>
-    <label for="root2" class="titlbl">Inactive users</label> 
-    <section id="root2" class="column">
-       
-    </section>
-</div>
-    <!-- <div id="root">
+    
+        <div class='wrapper'>
+            <div class='row'>
+              <div class='column'>
+                <span class="ust">Active Users</span>  
+                <div class='blue-column' id="root1">
+                  
+                </div>
+              </div>
+              <div class='column'>
+                <span class="ust">Inactive Users</span>  
+                <div class='green-column' id="root2">
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+          
 
-    </div> -->
 </body>
 
 </html>

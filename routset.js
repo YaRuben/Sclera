@@ -101,6 +101,22 @@ module.exports = [
 
         }
     },
+    {
+        method: 'GET',
+        path: '/exsql/{qry}',
+        options: {auth: false},
+        handler: async (request, h) =>{
+            try{
+            let qry = request.params.qry;
+            let res = Array.from(litedb.all(qry,[]));
+            return h.response(res);
+            }catch(err){
+                throw Boom.notFound('Failed to get data');
+            }
+
+
+        }
+    },
 
     // POST requests [START]   
     {

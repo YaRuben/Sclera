@@ -60,7 +60,7 @@ const init = async () => {
             let role = artifacts.decoded.payload.role;
             return {
                 isValid: true,
-                credentials: { user: artifacts.decoded.payload.user, role: artifacts.decoded.payload.role }
+                credentials: { user: usr, role: role }
             };
         }
     });

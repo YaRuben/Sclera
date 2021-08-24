@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <script src="js/sclera.js"></script>
+    <script>
+      async function fetchRequest(path, val){
+      let req = `${path}/${val}`
+      fetch(req, {
+      method: 'GET',
+      headers: {
+        "Content-type": "application/json",
+        "Accept": "application/json",
+        "Accept-Charset": "utf-8"
+    },
+      mode: "no-cors",
+      cache: "no-cache",
+      //body: val
+      })
+  .then(async response => {$('res').value = await response.text();})
+  //.then(async response => {cont = await response.text();})
+  .catch(error => console.error('Error:', error))
+  .then(response => console.log('Success:', JSON.stringify(response)));
+ 
+  };
+  
+    </script>
+</head>
+
+<body>
+    <form id="sqlex">
+        <fieldset>
+            <legend>Execute SQL query</legend>
+            <!-- <input type="file" name="db" placeholder="Select Database"><br><br> -->
+            <textarea id="qry" name="sql" placeholder="SQL Query" rows="30" cols="160"></textarea><br><br>
+            <input type="button" value="Execute" onclick="fetchRequest('/exsql',$('qry').value)"><br><br>
+            <textarea id="res" name="res" placeholder="Result" rows="30" cols="160" readonly wrap="soft"></textarea>
+        </fieldset>
+    </form>
+
+    <script src="" async defer></script>
+</body>
+
+</html>

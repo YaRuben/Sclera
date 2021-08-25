@@ -7,19 +7,19 @@
     <title>Sign In</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./js/sclera.js" ></script>
+    <script src="./js/sudox.js" ></script>
+    <script>
+        var opv = (n, j) => { return `<option value="${j.ID}">${j.Role}</option>` };
+    </script>
 </head>
-<body>
-    <div>
-        <form id="enroll" method="post" action="/signin">
+<body onload="buildOptions('/roles',null,$('rolelist'));">
+           <form id="enroll" method="post" action="/signin">
             <fieldset>
                 <legend>Enrollment information</legend>
-                <label for="role">Choose your role:</label>
-                <select id="role" name="role">
-                  <option value="doctor">Doctor</option>
-                  <option value="manufacturer">Manufacturer</option>
-                  <option value="designer">Designer</option>
-                  <option value="reviewer">Reviewer</option>
+                <label for="rolelist">Choose your role:</label><br>
+                <select id="rolelist" name="role">
                 </select><br> 
                 <input type="text" name="fname" placeholder="First Name" required><br>
                 <input type="text" name="lname" placeholder="Last Name" required><br>
@@ -42,7 +42,7 @@
             </fieldset>
         </form>
     </div>
-    <script src="" async defer></script>
+    
 </body>
 
 </html>

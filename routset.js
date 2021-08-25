@@ -33,6 +33,20 @@ module.exports = [
     },
     {
         method: 'GET',
+        path: '/roles',
+        options: { auth: false },
+        handler: async (request, h) => {
+            try {
+                let res = litedb.all(cfg.dblite.userRoles, []);
+                return h.response(res);
+
+            } catch (err) {
+                throw Boom.notFound('Failed to get roles');
+            }
+        }
+    },
+    {
+        method: 'GET',
         path: '/login/{usr}/{pwd}',
         options: { auth: false },
         handler: async (request, h) => {
@@ -71,10 +85,10 @@ module.exports = [
         handler: async (request, h) => {
             try {
                 let stat = request.params.status;
-                let sp = (stat==='new')?1:0;
+                let sp = (stat === 'new') ? 1 : 0;
                 let res = litedb.all(cfg.dblite.userSelect, [sp]);
-                res = res.map((x,i) => {let R = {}; R[`section`]=x; return R;});
-                let Ro = {'users': res};
+                res = res.map((x, i) => { let R = {}; R[`section`] = x; return R; });
+                let Ro = { 'users': res };
                 return h.response(Ro);
             } catch (err) {
                 throw Boom.notFound('Failed to get users');
@@ -85,16 +99,16 @@ module.exports = [
     {
         method: 'GET',
         path: '/uflip/{id}',
-        options: {auth: false},
-        handler: async (request, h) =>{
-            try{
-            let id = request.params.id;
-            let res = litedb.run(cfg.dblite.userFlipStatus, [id]);
-            console.log(res);
-            if(res.changes == 1){
-            return h.redirect('/users.html');
-            }else{throw Boom.Boom.badrequest('The user status can not be changed',`User Id: ${id}`);}
-            }catch(err){
+        options: { auth: false },
+        handler: async (request, h) => {
+            try {
+                let id = request.params.id;
+                let res = litedb.run(cfg.dblite.userFlipStatus, [id]);
+                console.log(res);
+                if (res.changes == 1) {
+                    return h.redirect('/users.html');
+                } else { throw Boom.Boom.badrequest('The user status can not be changed', `User Id: ${id}`); }
+            } catch (err) {
                 throw Boom.notFound('Failed to flip Status');
             }
 
@@ -104,13 +118,13 @@ module.exports = [
     {
         method: 'GET',
         path: '/exsql/{qry}',
-        options: {auth: false},
-        handler: async (request, h) =>{
-            try{
-            let qry = request.params.qry;
-            let res = Array.from(litedb.all(qry,[]));
-            return h.response(res);
-            }catch(err){
+        options: { auth: false },
+        handler: async (request, h) => {
+            try {
+                let qry = request.params.qry;
+                let res = Array.from(litedb.all(qry, []));
+                return h.response(res);
+            } catch (err) {
                 throw Boom.notFound('Failed to get data');
             }
 
